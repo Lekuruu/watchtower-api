@@ -1,5 +1,7 @@
+sqlalchemy[asyncio]
 python-dotenv==1.0.1
 websockets==12.0
 fastapi==0.110.0
 uvicorn==0.28.0
+ayncpg==0.29.0
 redis==5.0.3
