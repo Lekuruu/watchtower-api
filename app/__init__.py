@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI
 
+from . import repositories
 from . import routes
 
 import logging
