@@ -27,7 +27,7 @@ async def by_checksum(checksum: str, session: AsyncSession = ...):
         await session.execute(
             select(DBScore).where(DBScore.checksum == checksum)
         )
-    ).scalars().all()
+    ).scalars().first()
 
 @session_wrapper
 async def recent(limit: int, offset: int = 0, session: AsyncSession = ...):
