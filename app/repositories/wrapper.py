@@ -1,5 +1,5 @@
 
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from functools import wraps
 
 import app.session
@@ -11,7 +11,7 @@ def session_wrapper(func):
             # Use existing session
             return await func(*args, **kwargs)
 
-        if args and isinstance(args[-1], Session):
+        if args and isinstance(args[-1], AsyncSession):
             # Use existing session
             return await func(*args, **kwargs)
 
