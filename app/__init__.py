@@ -22,7 +22,7 @@ api = FastAPI(
     redoc_url=None
 )
 
-api.include_router(routes.router)
+api.include_router(routes.router, prefix='/api')
 
 def run():
     uvicorn.run(
