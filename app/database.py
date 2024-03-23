@@ -28,3 +28,13 @@ async def managed_session():
         raise
     finally:
         await session.close()
+
+async def get_session():
+    try:
+        async with session_generator() as session:
+            yield session
+    except:
+        await session.rollback()
+        raise
+    finally:
+        await session.close()
