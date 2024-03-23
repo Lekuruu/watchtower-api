@@ -1,8 +1,9 @@
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 from app.repositories.wrapper import session_wrapper
 from app.database import DBScore
+
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 @session_wrapper
 async def by_id(score_id: int, session: AsyncSession = ...):
