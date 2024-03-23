@@ -1,6 +1,6 @@
 
 from fastapi.responses import JSONResponse, StreamingResponse
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from app.database import get_session
 from app.responses import score_dict
@@ -9,6 +9,19 @@ from app.repositories import scores
 import app.session as session
 
 router = APIRouter()
+
+@router.get("/scores/recent")
+async def get_recent_scores(
+    limit: int = Query(50, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    session=Depends(get_session)
+):
+    recent_scores = await scores.recent(
+        limit=limit,
+        offset=offset,
+        session=session
+    )
+    return [score_dict(score) for score in recent_scores]
 
 @router.get("/scores/{checksum}")
 async def get_scores(
