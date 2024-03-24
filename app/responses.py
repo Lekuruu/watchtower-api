@@ -20,7 +20,6 @@ def score_dict(score: DBScore) -> dict:
         },
         "stats": {
             "pp": score.pp,
-            "pp_fc": score.pp_fc,
             "acc": score.acc,
             "total_score": score.total_score,
             "max_combo": score.max_combo,
