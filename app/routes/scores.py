@@ -1,6 +1,6 @@
 
 from fastapi.responses import JSONResponse, StreamingResponse
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 
 from app.database import get_session
 from app.responses import score_dict
@@ -40,9 +40,27 @@ async def get_scores(
 
 @router.get("/scores/{checksum}/replay")
 async def get_replay(checksum: str):
-    if replay := session.redis.get(f"replay:{checksum}"):
-        return StreamingResponse(
-            replay, media_type="application/octet-stream"
+    score = await scores.by_checksum(checksum)
+
+    if not score:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Score not found"}
+        )
+
+    if not score.replay_available:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Replay not available"}
+        )
+
+    if replay := await session.redis.get(f"replays:{checksum}"):
+        return Response(
+            replay,
+            media_type="application/octet-stream",
+            headers={
+                "Content-Disposition": f"attachment; filename={score.replay_filename}"
+            }
         )
 
     # TODO: Implement replay storage
